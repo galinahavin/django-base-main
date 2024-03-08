@@ -37,3 +37,100 @@ See Django documentation for other commands, such as generating and applying mig
 To run python tests, use `poetry run pytest`.
 To run TS/JS tests, use `npm run test`.
 
+## Additional information
+
+In this project we read the research data from events_data.csv file, located in the root directory django-base-main 
+
+The column names in events_data.csv file:
+
+Event date
+Event name
+Event description
+Tags
+Link to additional info 
+
+Tags are some helpful identifying tags for the type of event in question.
+Our goal is to find the corellation between the events in research and the updates on the relevant Wiki pages.
+We'll create a dashboard to illustrate the corellation.
+
+## VSCode Project setup
+
+The project is implemented in VSCode IDE
+
+1. In the VSCode terminal, in the root directory (django-base-main), create virtual environment using command:
+python -m venv venv
+
+activate virtual environment using command: 
+.\venv\Scripts\activate
+
+2. Execute the steps 1-7 to install the dependencies and build the project.
+install some additional dependencies:
+
+pip install plotly
+pip install pandas
+pip install requests
+pip install wikipedia
+pip install colorhash
+
+
+3. In the virtual environment, execute custom command to create objects for the events and populate the database:
+
+(venv) PS C:\Users\...\django-base-main>python manage.py load_events
+
+4. The server is run with the command:
+
+python manage.py runserver
+
+5. Access the chart with url:
+
+http://127.0.0.1:8000/
+
+
+## Project components
+
+## Project Models
+
+In this app, two models are implemented in 
+dashboard\models.py
+
+- Event is a model created for the objects based on the data from events_data.csv 
+- WikiRevisionEvent is a model created for the data retrieved from Wiki, using Wiki revisions API:
+
+https://www.mediawiki.org/wiki/API:Revisions 
+
+## Project Custom command 'load_events'
+
+Custom command is implemented in :
+dashboard\management\commands\load_events.py
+
+
+The command creates 2 types of objects based on 2 models and 
+populates the database sqlite with the data from events_data.csv file and Wiki revisions 
+
+## View (the dashboard)
+
+The dashboard component is implemented in :
+dashboard\views.py
+
+Plotly framework is used for the dashboard.
+
+The view is created with 2 graph_objects, populated with wiki_data and data from events_data.csv file for comparisson
+
+The data is derived from tags obtained from a CSV document 
+and Wikipedia revisions of the event date plus the subsequent six months.
+Additionally, the Wiki events have been grouped by month periods.
+
+After we start the server, we can access the chart with url:
+
+http://127.0.0.1:8000/
+
+
+
+
+
+
+
+
+
+
+
